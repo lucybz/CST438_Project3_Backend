@@ -14,6 +14,8 @@ public class Item {
     private String description;
 
     private String category;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Item() {
     }
@@ -49,4 +51,13 @@ public class Item {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getImageUrl() { 
+        return imageUrl; 
+    }
+    
+    public void setImageUrl(String imageUrl) { 
+        this.imageUrl = imageUrl; 
+    }
+
 }
