@@ -16,9 +16,7 @@ public class User {
     private String email;
 
     @Column(nullable = true)
-    private String password; 
-
-    private String provider;
+    private String password; // Add this field
 
     public User() {}
 
@@ -40,7 +38,4 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-    public String getProvider() { return provider; }
-    public void setProvider(String provider) { this.provider = provider; }
 }
