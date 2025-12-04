@@ -25,7 +25,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation 'software.amazon.awssdk:s3:2.25.66'
-  implementation 'software.amazon.awssdk:auth:2.25.66'
+  	implementation 'software.amazon.awssdk:auth:2.25.66'
 	implementation 'io.github.cdimascio:dotenv-java:2.3.2'
 
 
@@ -36,6 +36,7 @@ dependencies {
 
 	testImplementation 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'com.google.code.gson:gson:2.11.0'
 }
 
 tasks.named('test') {

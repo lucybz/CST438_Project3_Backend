@@ -26,6 +26,16 @@ public class User {
         this.password = password;
     }
 
+    private String provider;  // "google", "github", etc.
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
     // Getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
