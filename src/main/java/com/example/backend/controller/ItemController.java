@@ -4,6 +4,7 @@ import com.example.backend.repository.ItemRepository;
 import com.example.backend.entity.Item;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
@@ -24,5 +25,14 @@ public class ItemController {
     @PostMapping
     public Item create(@RequestBody Item item) {
         return repo.save(item);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!repo.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
