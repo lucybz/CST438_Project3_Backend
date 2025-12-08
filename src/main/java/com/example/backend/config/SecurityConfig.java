@@ -1,10 +1,15 @@
-/* 
 package com.example.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -12,41 +17,39 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            // Enable CORS in Spring Security
+            .cors(Customizer.withDefaults())
+            // Turn off CSRF (API only)
+            .csrf(csrf -> csrf.disable())
+            // Still permit everything for now
             .authorizeHttpRequests(auth -> auth
-                // allow access to these routes without login
-                .requestMatchers("/", "/public/**", "/api/test", "/health").permitAll()
-                //.requestMatchers("/", "/public/**", "/api/test", "/health", "/api/items", "/chats", "/messages" ).permitAll()
-                // everything else requires authentication
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
-            // remove the default login form (for APIs)
-            .httpBasic().disable()
-            .formLogin().disable();
+            .httpBasic(b -> b.disable())
+            .formLogin(f -> f.disable());
+
         return http.build();
     }
-}
-*/
 
-
-package com.example.backend.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration
-public class SecurityConfig {
+    // which origins/methods/headers to allow
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Allows all endpoints to work for now so I don't have to manually add them
-                )
-                .httpBasic(b -> b.disable())
-                .formLogin(f -> f.disable());
-        return http.build();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        // 🔹 Allowed frontend origins
+        config.setAllowedOrigins(List.of(
+                "http://localhost:8081"   // Expo web dev server
+                // add deployed frontend origin here later
+        ));
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        config.setAllowedHeaders(List.of("*"));
+
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
