@@ -22,6 +22,11 @@ public class ItemController {
         return repo.findAll();
     }
 
+    @GetMapping("/user/{userId}")
+    public List<Item> getByUser(@PathVariable Long userId) {
+        return repo.findByUserId(userId);
+    }
+
     @PostMapping
     public Item create(@RequestBody Item item) {
         return repo.save(item);
