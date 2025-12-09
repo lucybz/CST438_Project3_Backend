@@ -36,6 +36,20 @@ public class ProfileController {
         }
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            boolean deleted = userService.deleteUserById(id);
+            if (!deleted) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.noContent().build();  // 204
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Could not delete user: " + e.getMessage());
+        }
+    }
+
     static class SignupRequest {
         private String email;
         private String password;
