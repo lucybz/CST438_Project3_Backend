@@ -40,4 +40,23 @@ public class ItemController {
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Item> updateItem(
+            @PathVariable Long id,
+            @RequestBody Item updatedItem
+    ) {
+        return repo.findById(id)
+                .map(existing -> {
+                    existing.setTitle(updatedItem.getTitle());
+                    existing.setDescription(updatedItem.getDescription());
+                    existing.setPrice(updatedItem.getPrice());
+                    existing.setCategory(updatedItem.getCategory());
+                    existing.setImageUrl(updatedItem.getImageUrl());
+
+                    Item saved = repo.save(existing);
+                    return ResponseEntity.ok(saved);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
