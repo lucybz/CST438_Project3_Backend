@@ -17,6 +17,9 @@ public class Item {
     @Column(name = "image_url")
     private String imageUrl;
     private String price;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public Item() {
     }
@@ -68,5 +71,12 @@ public class Item {
     public void setPrice(String price) {
         this.price = price;
     }
+    
+    public User getUser() { 
+        return user; 
+    }
 
+    public void setUser(User user) { 
+        this.user = user; 
+    }
 }
